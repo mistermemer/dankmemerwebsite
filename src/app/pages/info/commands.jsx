@@ -15,6 +15,9 @@ export default function Commands(props) {
 	const [search, setSearch] = useState('');
 	const [prefix, setPrefix] = useState('pls ');
 
+	const [preview, setPreview] = useState(false);
+	const [previewHeight, setPreviewHeight] = useState(0);
+
 	useEffect(() => {
 		createAd('nitropay-commands-top', { sizes: [ [728, 90] ] }, 'desktop');
 		createAd('nitropay-commands-top', { sizes: [
@@ -45,6 +48,8 @@ export default function Commands(props) {
 			return window.history.pushState(null, null, 'commands');
 		}
 
+		setPreviewHeight(document.getElementById("commands-list").clientHeight - 10);
+
 		return () => {
 			setPrefix('pls ');
 		}
@@ -53,6 +58,7 @@ export default function Commands(props) {
 	useEffect(() => {
 		setCommands([]);
 		setCommands(Object.values(commandsFile)[Object.keys(commandsFile).indexOf(category)]);
+		setPreviewHeight(document.getElementById("commands-list").clientHeight);
 	}, [category]);
 
 	useEffect(() => {
@@ -67,6 +73,7 @@ export default function Commands(props) {
 			setCategory(categories.current[0]);
 			setCommands(Object.values(commandsFile)[Object.keys(commandsFile).indexOf(category)]);
 		}
+		setPreviewHeight(document.getElementById("commands-list").clientHeight - 10);
 		return () => {
 			setCommands([]);
 		}
@@ -93,10 +100,12 @@ export default function Commands(props) {
 		document.getElementById('commands-search').value="";
 		setCategory(categories.current[index]);
 		setExpandedIndex(null);
+		setPreviewHeight(document.getElementById("commands-list").clientHeight - 10);
 	}
 
 	const expand = (index) => {
 		setExpandedIndex(index.toString() && index === expandedIndex ? null : index);
+		setPreviewHeight(document.getElementById("commands-list").clientHeight - 10);
 	}
 
 	return (
@@ -161,6 +170,21 @@ export default function Commands(props) {
 							type={'command'}
 							setExpanded={expand}/>
 					))}
+				</div>
+				<div id="commands-preview-wrapper" style={{ height: previewHeight }}>
+					<div id="commands-preview">
+						<div id="commands-preview-chat">
+							<div id="commands-preview-chat-messages">
+								<p id="commands-preview-chat-messages-title">Welcome to the Dank Memer command previewer!</p>
+								<p id="commands-preview-chat-messages-info">Here you are able to try out commands before you use them in the bot. This is useful if you have never used Dank Memer or if you plan on adding it to one of your servers.</p>
+							</div>
+						</div>
+						<div id="commands-preview-message">
+							<div id="commands-preview-message-prefix">
+								<span title="Dank Memer's command prefix">{prefix}</span>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 	    <div id="nitropay-commands-bottom" className="nitropay" />
