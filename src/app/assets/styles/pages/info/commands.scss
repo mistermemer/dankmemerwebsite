@@ -150,12 +150,15 @@ $text-accent-3: rgb(189, 189, 189);
 		}
 		#commands-preview-wrapper {
 			margin: 0;
-			width: 75%;
+			min-width: 40%; max-width: 40%;
+			.opening {
+				animation: openPreviewer 1s 1 forwards;
+			}
 			#commands-preview {
 				margin-top: 5px;
 				height: 530px;
 				position: sticky;
-				top: 0px;
+				top: 10px;
 				border-radius: 5px;
 				overflow: hidden;
 				background: #050b06;
@@ -166,6 +169,7 @@ $text-accent-3: rgb(189, 189, 189);
 					flex-direction: column-reverse;
 					padding: 10px 15px;
 					box-sizing: border-box;
+					overflow-y: auto;
 					&-messages {
 						&-title {
 							font-size: 30px;
@@ -195,6 +199,16 @@ $text-accent-3: rgb(189, 189, 189);
 						height: 100%;
 						background: rgba(0, 0, 0, 0.6);
 						color: #7a7a7a;
+					}
+					&-input {
+						height: 100%;
+						width: 100%;
+						border: none;
+						font-size: 16px;
+						font-family: 'Inter', sans-serif;
+						background: transparent;
+						color: #ffffff;
+						padding-left: 15px;
 					}
 				}
 			}
@@ -488,6 +502,15 @@ $text-accent-3: rgb(189, 189, 189);
 				}
 			}
 		}
+	}
+}
+
+@keyframes openPreviewer {
+	0% {
+		max-width: 0px;
+	}
+	100% {
+		max-width: 40%;
 	}
 }
 

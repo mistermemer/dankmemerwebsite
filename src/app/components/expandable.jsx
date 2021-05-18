@@ -37,17 +37,25 @@ export default function Expandable (props) {
 
     return (
         <div className={props.expanded ? "expandable expanded" : wasExpanded ? "expandable closing" : "expandable"}>
-            <div className="expandable-text" onClick={() => props.setExpanded(props.index)}>
-                <p className="expandable-text-title">{props.name}
-                {props.star ?
-                    <span className="expandable-text-title-star" title="This is a premium feature.">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 20" fill="none" stroke="#ffbf00" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                            <path fill="#ffbf00" d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" />
-                        </svg>
-                    </span>
-                : ''}</p>
-                { props.type === 'command' ? <p className="expandable-text-message" dangerouslySetInnerHTML={{ __html: description }}></p> : ''}
+            <div className="expandable-wrapper">
+                <div className="expandable-text" onClick={() => props.setExpanded(props.index)}>
+                    <p className="expandable-text-title">{props.name}
+                        {props.star ?
+                            <span className="expandable-text-title-star" title="This is a premium feature.">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 20" fill="none" stroke="#ffbf00" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                    <path fill="#ffbf00" d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" />
+                                </svg>
+                            </span>
+                        : ''}
+                    </p>
+                    { props.type === 'command' ? <p className="expandable-text-message" dangerouslySetInnerHTML={{ __html: description }}></p> : ''}
+                </div>
+                { props.preview && props.type === 'command' ?
+                <div className="expandable-action" onClick={() => props.setPreview(props.name)}>
+                    <p className="expandable-action-text">Preview <span className="material-icons">play_arrow</span></p>
+                </div>
+                : ''}
             </div>
             {props.type === 'command' ?
                 <div className="expandable-body">

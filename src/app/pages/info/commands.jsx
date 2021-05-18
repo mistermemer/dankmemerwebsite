@@ -16,6 +16,7 @@ export default function Commands(props) {
 	const [prefix, setPrefix] = useState('pls ');
 
 	const [preview, setPreview] = useState(false);
+	const [previewCommand, setCommandPreview] = useState("");
 	const [previewHeight, setPreviewHeight] = useState(0);
 
 	useEffect(() => {
@@ -93,7 +94,7 @@ export default function Commands(props) {
 				}
 			});
 		}
-	}, [categoryDropdown])
+	}, [categoryDropdown]);
 	
 	const changeCategory = (index) => {
 		setSearch("");
@@ -106,6 +107,11 @@ export default function Commands(props) {
 	const expand = (index) => {
 		setExpandedIndex(index.toString() && index === expandedIndex ? null : index);
 		setPreviewHeight(document.getElementById("commands-list").clientHeight - 10);
+	}
+
+	const showCommandPreviewer = (command) => {
+		setPreview(true);
+		setCommandPreview(command);
 	}
 
 	return (
@@ -168,24 +174,29 @@ export default function Commands(props) {
 							star={command.pS ? true : false}
 							expanded={expandedIndex === commands.indexOf(command)}
 							type={'command'}
-							setExpanded={expand}/>
+							setExpanded={expand}
+							preview={true}
+							setPreview={showCommandPreviewer}/>
 					))}
 				</div>
-				<div id="commands-preview-wrapper" style={{ height: previewHeight }}>
-					<div id="commands-preview">
-						<div id="commands-preview-chat">
-							<div id="commands-preview-chat-messages">
-								<p id="commands-preview-chat-messages-title">Welcome to the Dank Memer command previewer!</p>
-								<p id="commands-preview-chat-messages-info">Here you are able to try out commands before you use them in the bot. This is useful if you have never used Dank Memer or if you plan on adding it to one of your servers.</p>
+				{preview ?
+					<div id="commands-preview-wrapper" className="opening" style={{ height: previewHeight }}>
+						<div id="commands-preview">
+							<div id="commands-preview-chat">
+								<div id="commands-preview-chat-messages">
+									<p id="commands-preview-chat-messages-title">Welcome to the Dank Memer command previewer!</p>
+									<p id="commands-preview-chat-messages-info">Here you are able to try out commands before you use them in the bot. This is useful if you have never used Dank Memer or if you plan on adding it to one of your servers.</p>
+								</div>
 							</div>
-						</div>
-						<div id="commands-preview-message">
-							<div id="commands-preview-message-prefix">
-								<span title="Dank Memer's command prefix">{prefix}</span>
+							<div id="commands-preview-message">
+								<div id="commands-preview-message-prefix">
+									<span title="Dank Memer's command prefix">{prefix}</span>
+								</div>
+								<input id="commands-preview-message-input" placeholder="Enter a command..." defaultValue={previewCommand} value={previewCommand} onChange={(e) => setCommandPreview(e.target.value)} />
 							</div>
 						</div>
 					</div>
-				</div>
+				: ''}
 			</div>
 	    <div id="nitropay-commands-bottom" className="nitropay" />
 		</div>
