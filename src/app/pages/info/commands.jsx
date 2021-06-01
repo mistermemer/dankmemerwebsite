@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
+import DankMemer from '../../assets/img/memer.webp';
 import commandsFile from './data/commands.json';
 import Expandable from '../../components/expandable';
 import createAd from '../../util/createAd';
+import * as axios from 'axios';
 
 import 'assets/styles/pages/info/commands.scss';
 
@@ -101,17 +103,35 @@ export default function Commands(props) {
 		document.getElementById('commands-search').value="";
 		setCategory(categories.current[index]);
 		setExpandedIndex(null);
+
+		// Command previewer
 		setPreviewHeight(document.getElementById("commands-list").clientHeight - 10);
+		setPreview(false);
+		setCommandPreview("");
 	}
 
 	const expand = (index) => {
 		setExpandedIndex(index.toString() && index === expandedIndex ? null : index);
+
+		// Needed for the command previewer sticky container
 		setPreviewHeight(document.getElementById("commands-list").clientHeight - 10);
 	}
 
 	const showCommandPreviewer = (command) => {
 		setPreview(true);
 		setCommandPreview(command);
+	}
+
+	const processCommand = (command) => {
+		setCommandPreview("");
+		axios({
+			url: `https://www.reddit.com/r/${command}/top/.json`,
+			method: 'GET',
+		}).then(({ data }) => {
+			console.log(data);
+		}).catch(e => {
+			console.log(e.message.replace(/"/g, ''))
+		})
 	}
 
 	return (
@@ -186,13 +206,24 @@ export default function Commands(props) {
 								<div id="commands-preview-chat-messages">
 									<p id="commands-preview-chat-messages-title">Welcome to the Dank Memer command previewer!</p>
 									<p id="commands-preview-chat-messages-info">Here you are able to try out commands before you use them in the bot. This is useful if you have never used Dank Memer or if you plan on adding it to one of your servers.</p>
+									<div className="message">
+										{/* Sample message used for testing. 
+										<div className="message-text">
+											<img className="message-text-author" src={DankMemer} width="32px" height="32px"/>
+											<p>Yesterday my daughter found a kitten. She is allergic so I'm new mom now and his name is Sam. I'm in love 😍</p>
+										</div>
+										<img className="message-image" src="https://preview.redd.it/80l10ve14k271.jpg?width=640&crop=smart&auto=webp&s=6b812fcfe6b0c1aa9324e1c61dd0c9dc035516ba"/> */}
+									</div>
 								</div>
 							</div>
 							<div id="commands-preview-message">
 								<div id="commands-preview-message-prefix">
 									<span title="Dank Memer's command prefix">{prefix}</span>
 								</div>
-								<input id="commands-preview-message-input" placeholder="Enter a command..." defaultValue={previewCommand} value={previewCommand} onChange={(e) => setCommandPreview(e.target.value)} />
+								<input type="text" id="commands-preview-message-input" placeholder="Enter a command..." value={previewCommand} onKeyDown={(e) => e.key === "Enter" ? processCommand(previewCommand) : ''} onChange={(e) => setCommandPreview(e.target.value)} />
+								<div id="commands-preview-message-suffix" onClick={() => processCommand(previewCommand)}>
+									<span>Send <span className="material-icons">send</span></span>
+								</div>
 							</div>
 						</div>
 					</div>

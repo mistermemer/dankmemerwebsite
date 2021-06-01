@@ -147,6 +147,7 @@ $text-accent-3: rgb(189, 189, 189);
 			width: 100%;
 			margin-right: 10px;
 			padding: 5px;
+			box-sizing: border-box;
 		}
 		#commands-preview-wrapper {
 			margin: 0;
@@ -182,6 +183,22 @@ $text-accent-3: rgb(189, 189, 189);
 							border-bottom: 1px solid #3b3b3b;
 						}
 					}
+					.message {
+						&-text {
+							display: flex;
+							justify-content: center;
+							align-items: center;
+							&-author {
+								margin-right: 20px;
+							}
+						}
+						&-image {
+							margin-left: 52px;
+							margin-top: 10px;
+							flex-basis: 100%;
+							width: 40%;
+						}
+					}
 				}
 				&-message {
 					background: rgba(0, 0, 0, 0.24);
@@ -209,6 +226,27 @@ $text-accent-3: rgb(189, 189, 189);
 						background: transparent;
 						color: #ffffff;
 						padding-left: 15px;
+					}
+					&-suffix {
+						display: grid;
+						place-items: center;
+						user-select: none;
+						padding: 0 15px;
+						width: 90px;
+						height: 100%;
+						background: #39923c;
+						color: #ffffff;
+						font-size: 16px;
+						cursor: pointer;
+						& > * {
+							display: flex;
+							justify-content: center;
+							align-items: center;
+						}
+						.material-icons {
+							font-size: 15px;
+							margin-left: 5px;
+						}
 					}
 				}
 			}
